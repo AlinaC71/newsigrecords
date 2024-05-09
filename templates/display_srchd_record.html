@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Records page</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+</head>
+<body>
+    <h1>Record info requested</h1>
+
+    <br>
+    <br>
+        
+    <table>
+        <thead>
+            <tr>
+                <!-- <th>Record ID</th> -->
+                <th>Status</th>
+                <th>Control Area</th>
+                <th>Installation</th>
+                <th>Location</th>
+                <th>Drawing number</th>
+                <th>Old version</th>
+                <th>New version</th>
+                <th>Barcode</th>
+                <th>Title</th> 
+                <th>Cad File Name</th>
+                <th>Medium</th>
+                <th>Size</th>
+                <th>In production</th>
+                <th>Return ready</th>
+                <th>Return no</th>
+                <th>Request no</th>
+                <th>Record centre name</th>
+                <th>Drawing type code</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                {% for item in row[1:]%}
+                <td>{{ item}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+

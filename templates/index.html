@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+    
+    
+
+</head>
+<body>
+    <h1>Welcome to Sigrec Database!</h1>
+    <div class = button-container>
+        <form action="/projects" method="GET">
+            <button class = "button" type="submit">Projects</button>
+        </form>
+
+        <form action="/records" method="GET">
+            <button class = "button" type="submit">Records</button>
+        </form>
+    </div>
+</body>
+</html>

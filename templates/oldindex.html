@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Data Fetching</title>
+</head>
+<body>
+    <h1>Data from MySQL Database</h1>
+    <div id="data"></div>
+
+    <script>
+        // Function to make AJAX request to Flask backend
+        function fetchData() {
+            // Create XMLHttpRequest object
+            var xhr = new XMLHttpRequest();
+
+            // Define callback function to handle response
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Parse JSON response
+                        var data = JSON.parse(xhr.responseText);
+                        
+                        // Display data on webpage
+                        var dataDiv = document.getElementById('data');
+                        dataDiv.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                    } else {
+                        console.error('Error fetching data:', xhr.status);
+                    }
+                }
+            };
+
+            // Open connection and send request to Flask backend
+            xhr.open('GET', '/data', true);
+            xhr.send();
+        }
+
+        // Call fetchData function when page loads
+        window.onload = fetchData;
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+body {
+    background-color: #72d5d8;
+}
+
+/* h1 {
+    text-align: center;
+} */
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #000000;
+}
+
+th {
+    background-color: #007bff;
+    color: rgb(0, 0, 0);
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-around; 
+}
+
+
+.button {
+    padding: 10px 20px;
+    background-color: #6291c3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
