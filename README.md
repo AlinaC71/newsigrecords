@@ -1,2 +1,2 @@
 # sigrec
-Web app in Flask using a MySQL database
+This project is a Document Management System (DMS) built with Flask and a MySQL database. It aims to streamline and automate the document management process, replacing the manual workflows typically used in managing documents. The application features a user-friendly web interface for efficient document handling and organization.
