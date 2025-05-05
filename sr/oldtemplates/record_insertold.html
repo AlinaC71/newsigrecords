@@ -1,0 +1,78 @@
+{% extends 'record_selection_base.html' %}
+
+{% block title %}Record Insert{% endblock %}
+
+{% block name %}Insert a Record{% endblock %}
+
+{% block content %}
+<form method="POST">
+    <table id="myTable">
+        <thead>
+            <tr>
+                {% for h in header %}
+                    <th>{{ h.replace("_", " ").upper() }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="input-row">
+                {% for h in header %}
+                    <td><input type="text" name="{{ h }}"></td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>
+                    <button type="submit">Submit</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const table = document.getElementById('myTable');
+    const tbody = table.tBodies[0];
+    const form = document.querySelector('form');
+
+    function setupLastRowListener() {
+        const inputRows = tbody.querySelectorAll('tr.input-row');
+        const lastRow = inputRows[inputRows.length - 1];
+        const inputs = lastRow.querySelectorAll('input');
+
+        inputs.forEach(input => {
+            input.addEventListener('input', () => {
+                const allFilled = Array.from(inputs).every(inp => inp.value.trim() !== '');
+
+                // Check if the last row is the actual last .input-row (i.e., no empty row exists yet)
+                const nextRow = lastRow.nextElementSibling;
+                const alreadyAdded = nextRow && nextRow.classList.contains('input-row') &&
+                    Array.from(nextRow.querySelectorAll('input')).every(inp => inp.value.trim() === '');
+
+                if (allFilled && !alreadyAdded) {
+                    const newRow = lastRow.cloneNode(true);
+                    newRow.querySelectorAll('input').forEach(inp => inp.value = '');
+                    newRow.classList.add('input-row');
+                    tbody.insertBefore(newRow, tbody.querySelector('tr:last-child'));
+                    setupLastRowListener(); // attach listener to new last row
+                }
+            });
+        });
+    }
+
+    form.addEventListener('submit', () => {
+        const rows = Array.from(tbody.querySelectorAll('tr.input-row'));
+        rows.forEach(row => {
+            const inputs = Array.from(row.querySelectorAll('input'));
+            const isEmpty = inputs.every(input => input.value.trim() === '');
+            if (isEmpty) row.remove();
+        });
+    });
+
+    setupLastRowListener();
+});
+</script>
+{% endblock %}

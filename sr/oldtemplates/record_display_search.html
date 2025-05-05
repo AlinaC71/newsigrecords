@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Records page</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+</head>
+<body>
+    
+    <h1>RECORD</h1>
+    <br>
+    <br> 
+           
+    <table>        
+        <thead>
+            <tr>
+                <!-- {% for r in record_dict %}   
+                    {{record_dict}}
+                {% endfor %} -->
+                {% for h in header %}
+                <th>{{h.replace("_", " ").upper()}}                    
+                        <select class="filter-dropdown" data-column="{{ h }}">
+                            <option value="">All</option>
+                            {% for o in filter_option[h] %}
+                                <option value="{{o}}">{{ o }}</option>
+                            {% endfor %}
+                        </select>
+                    
+                </th>
+                {% endfor %}                 
+            </tr>
+        </thead>
+        
+
+
+        <tbody> 
+            {% for record in records_json %}              
+                <tr>                  
+                    {% for h in header %}             
+                        <td>                        
+                            {{record[h]}}                       
+                        </td> 
+                    {% endfor%}
+                </tr>                               
+            {% endfor %} 
+        </tbody>           
+    </table>
+    <script>
+        document.addEventListener('DOMContentLoaded', () =>{
+            const table = document.querySelector('table');
+            const rows = Array.from(table.tBodies[0].rows);
+            const dropdowns = document.querySelectorAll('.filter-dropdown');
+            const activeFilters = {};
+
+            dropdowns.forEach(select => {
+                const colIndex = select.parentElement.cellIndex;
+
+                select.addEventListener("change", ()=> {
+                    const val = select.value;
+                    if (val) {
+                        activeFilters[colIndex] = val;
+                    } else {
+                        delete activeFilters[colIndex]
+                    }
+
+
+                    rows.forEach(row=> {
+                        let keep = true;
+                        for (const[idx, filterValue] of Object.entries(activeFilters)) {
+                            const cellText = row.cells[idx].textContent.trim();
+                            if (cellText !== filterValue) {
+                                keep = false;
+                                break;
+                            }
+                        }
+                        row.style.display = keep ? '': 'none';                
+                    });
+                });
+            });
+        });
+
+    </script>
+
+</body>
+</html>
+
+
+

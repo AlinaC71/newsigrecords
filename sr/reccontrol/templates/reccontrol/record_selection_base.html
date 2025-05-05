@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> {% block title %}Record{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+</head>
+<body> 
+       
+    <h1>{% block name %}{%endblock%}</h1>
+
+    {%block content%}
+
+    {% block form_open %}
+    {# Override this block in child if a <form> is needed #}
+    {% endblock %}
+        <br>        
+        <br> 
+           
+    <table id="'myTable">        
+        <thead>
+            <tr>
+                {% block checkbox_header %}{% endblock %}
+                {% for h in header %}
+                    <th>{{h.replace("_", " ").upper()}}
+                        {% block filter_dropdown scoped %}
+                        {% endblock %}            
+                    </th>
+                {% endfor %}                 
+            </tr>
+        </thead>
+        
+        <tbody> 
+            {% for record in records_json %}              
+                <tr>
+                    {% block checkbox_cell scoped %}{% endblock %}                    
+                    {% for h in header %}
+                        <td>                
+                            {{ record[h] }}                       
+                        </td> 
+                       
+                    {% endfor%}
+                </tr>                         
+            {% endfor %}
+
+            {% block button_select %}{% endblock %}
+
+            {% block button_submit %}{% endblock %}                
+        </tbody>
+    </table>
+    {% block form_close %}
+    {# Use this block to close form tag in child if form is open #}
+    {% endblock %}
+    {% endblock %}
+    
+
+{% block scripts %}
+    {% block filter_script %}
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const table = document.querySelector('table');
+        const rows = Array.from(table.tBodies[0].rows);
+        const dropdowns = document.querySelectorAll('.filter-dropdown');
+        const activeFilters = {};
+
+        dropdowns.forEach(select => {
+            const colIndex = select.parentElement.cellIndex;
+
+            select.addEventListener("change", () => {
+                const val = select.value;
+                if (val) {
+                    activeFilters[colIndex] = val;
+                } else {
+                    delete activeFilters[colIndex];
+                }
+
+                rows.forEach(row => {
+                    let keep = true;
+                    for (const [idx, filterValue] of Object.entries(activeFilters)) {
+                        const cellText = row.cells[idx].textContent.trim();
+                        if (cellText !== filterValue) {
+                            keep = false;
+                            break;
+                        }
+                    }
+                    row.style.display = keep ? '' : 'none';
+                });
+            });
+        });
+    });
+    </script>
+    {% endblock filter_script %}
+{% endblock scripts %}
+
+</body>
+</html>
+
+</body>
+</html>
+
+
+

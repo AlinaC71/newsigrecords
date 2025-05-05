@@ -1,0 +1,101 @@
+{% extends "record_selection_base.html"%} 
+
+{% block title %}Record update{% endblock %}
+
+{% block name %}RECORD UPDATE{% endblock %}
+
+
+{% block checkbox_header %}
+    <th></th>
+{% endblock %}
+
+
+{% block checkbox_cell %}    
+    <td>
+        <input type="checkbox" class="checkbox">
+        <input type="hidden" name="record_ids" value="{{ record['record_id'] }}">
+    </td>
+{% endblock %}
+
+
+{% block button_select %}
+    <button type="button" id="select-button">Select</button>
+{% endblock %}
+
+{% block button_submit %}
+    <button type="submit" id="submit-button" style="display: none;">Submit</button>
+{% endblock %}
+
+
+
+{% block filter_dropdown scoped%}
+    <select name="dropdown" class="filter-dropdown" data-column="{{ h }}">
+        <option value="">All</option>
+        {% for o in filter_option[h] %}
+            <option value="{{ o }}">{{ o }}</option>
+        {% endfor %}
+    </select>
+{% endblock %}
+
+
+{% block form_open %}
+<form  method="POST">    
+{% endblock %}
+
+
+{% block form_close %}
+</form>
+{% endblock %}
+
+
+{% block filter_script %}
+
+{{ super() }}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const selectButton = document.getElementById('select-button');
+        const submitButton = document.getElementById('submit-button');
+    
+        if (selectButton) {
+            selectButton.style.display = 'block';
+            selectButton.addEventListener('click', function () {
+                const checkboxes = document.querySelectorAll('.checkbox');
+    
+                checkboxes.forEach(checkbox => {
+                    const row = checkbox.closest('tr');
+                    if (!checkbox.checked && row) {
+                        row.remove(); // permanently delete unselected rows
+                    }
+                });
+    
+                console.log("Filtered rows — only checked remain visible.");
+    
+                selectButton.style.display = 'none';
+                submitButton.style.display = 'block';
+    
+                // 👇 Now, convert remaining rows to editable inputs
+                const visibleRows = Array.from(document.querySelectorAll('tbody tr'));
+                visibleRows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    cells.forEach((cell, index) => {
+                        if (index === 0) return; // skip the checkbox + hidden input cell
+
+                        const input = cell.querySelector('input[type="hidden"]');
+                        if (input) return; // safety check to skip hidden record_ids
+
+                        const text = cell.textContent.trim();
+                        cell.innerHTML = `<input type="text" name="fieldname[]" value="${text}">`;
+                        
+                    });
+                });
+            });
+        }
+    
+        console.log('Pre-selection finished');
+    });
+    </script>
+    
+{% endblock %}
+
+

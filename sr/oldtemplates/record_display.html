@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Records page</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+</head>
+<body>
+    <h1>RECORD</h1>
+    <br>
+    <br>        
+    <table>        
+        <thead>
+            <tr>
+                {% for h in header %}
+                <th>{{h.capitalize()}}</th>
+                {% endfor %} 
+            </tr>
+        </thead>
+               
+
+        <tbody> 
+            {% for record in records_json %}              
+                <tr>                  
+                    {% for h in header %}             
+                        <td>                        
+                            {{record[h]}}                       
+                        </td> 
+                    {% endfor%}
+                </tr>                               
+            {% endfor %} 
+        </tbody>           
+    </table>
+</body>
+</html>
+

@@ -1,0 +1,93 @@
+{% extends "record_selection_base.html"%}
+
+{% block title %}Record delete{% endblock %}
+
+{% block name %}
+RECORD DELETE 
+{% endblock %}
+
+
+{% block checkbox_header %}
+    <th></th>
+{% endblock %}
+
+
+{% block checkbox_cell %}    
+        <td><input type="checkbox" name="checkbox" class ="checkbox" value="{{ record['record_id']}}"></td>
+{% endblock %}
+
+
+{% block button_submit %}
+    <tr>
+        <td>
+    <button onclick="deleteRows()">Submit</button>
+        </td>
+    </tr>
+{% endblock %}
+
+
+{% block filter_dropdown %}
+    <select name="dropdown" class="filter-dropdown" data-column="{{ h }}">
+        <option value="">All</option>
+        {% for o in filter_option[h] %}
+            <option value="{{ o }}">{{ o }}</option>
+        {% endfor %}
+    </select>
+{% endblock %}
+
+
+{% block form_open %}
+<form id="delform" method="POST">    
+{% endblock %}
+
+
+{% block form_close %}
+</form>
+{% endblock %}
+
+
+
+{% block scripts %}
+    {{ super() }}
+
+<script>
+
+function deleteRows() {
+    const checkboxes = document.querySelectorAll('.checkbox');    
+    let deletedIds = [];
+
+    checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            deletedIds.push(checkbox.value);
+            console.log(deletedIds)
+            checkbox.closest('tr').style.display = 'none';
+        }
+    });
+    
+    // Remove any old hidden input to prevent duplicates
+    const oldInput = document.querySelector('input[name="deleted_ids"]');
+    if (oldInput) {
+        oldInput.remove();
+    }
+
+    // Inject hidden field into the form
+    const form = document.querySelector('#delform');
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'deleted_ids';
+    input.value = JSON.stringify(deletedIds);
+    console.log("Hidden input value:", input.value);
+    form.appendChild(input);
+
+    // Submit the form
+    form.submit();    
+
+}
+</script>
+
+{% endblock %}
+
+
+
+
+

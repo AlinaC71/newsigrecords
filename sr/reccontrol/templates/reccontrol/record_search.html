@@ -1,0 +1,20 @@
+{% extends 'record_selection_base.html' %}
+
+{% block title %}Record search{% endblock %}
+
+{% block name %}RECORD SEARCH{% endblock %}
+
+{% block content %}
+    {{ super () }}
+{% endblock %}
+
+{% block filter_dropdown scoped %} 
+                  
+    <select name="dropdown" class="filter-dropdown" data-column="{{ h }}">
+        <option value="">All</option>
+            {% for o in filter_option[h] %}
+                <option value="{{o}}">{{ o }}</option>
+            {% endfor %}
+    </select>  
+
+{% endblock %} 

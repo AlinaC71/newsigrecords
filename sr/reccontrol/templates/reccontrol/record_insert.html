@@ -1,0 +1,65 @@
+{% extends 'record_selection_base.html' %}
+
+{% block title %}Record Insert{% endblock %}
+
+{% block name %}RECORD INSERT{% endblock %}
+
+{% block content %}
+<form method="POST">
+    <table id="myTable">
+        <thead>
+            <tr>
+                {% for h in header %}
+                    <th>{{ h.replace("_", " ").upper() }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="input-row">
+                {% for h in header %}
+                    <td><input type="text" name="{{ h }}"></td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+
+    <button type="submit">Submit</button>    
+    <button type="button" id = "addrow">Add row</button>
+
+</form>
+{% endblock %}
+
+
+{% block filter_script %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const table = document.getElementById('myTable');
+    const tbody = table.tBodies[0];
+    const form = document.querySelector('form');
+    const addRowButton = document.getElementById('addrow');
+
+    // Manual row addition
+    if (addRowButton) {
+        addRowButton.addEventListener('click', () => {
+            const lastRow = tbody.querySelector('tr.input-row:last-of-type');
+            const newRow = lastRow.cloneNode(true);
+            newRow.querySelectorAll('input').forEach(inp => inp.value = '');
+            tbody.appendChild(newRow);
+            newRow.classList.add('input-row');
+        });
+    }
+
+    // Remove empty input rows on submit
+    if (form) {
+        form.addEventListener('submit', () => {
+            const rows = Array.from(tbody.querySelectorAll('tr.input-row'));
+            rows.forEach(row => {
+                const inputs = Array.from(row.querySelectorAll('input'));
+                const isEmpty = inputs.every(input => input.value.trim() === '');
+                if (isEmpty) row.remove();
+            });
+        });
+    }
+});
+</script>
+{% endblock %}
