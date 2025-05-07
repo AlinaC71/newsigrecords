@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, render_template, json, jsonify, request, redirect, url_for
+    Blueprint, render_template, json, flash, request, redirect, url_for
 )
 
 from collections import defaultdict
@@ -53,11 +53,15 @@ def record_insert():
     if request.method == 'POST':
         formdata = request.form
         # print("FORMDATA:", request.form)
-        records_to_insert = []
+        
 
         
         # Determine how many “rows” were submitted by looking at the first field
         num_rows = len(formdata.getlist(fields[0]))
+        records_to_insert = []
+        duplicate_count = 0
+        duplicates = []
+
         
         # Build Record instances dynamically        
         for i in range(num_rows):
@@ -68,18 +72,23 @@ def record_insert():
                 if field in ['request_no', 'return_no']:
                     record_kwargs[field] = value.strip() if value.strip() else None 
                 
-            records_to_insert.append(Record(**record_kwargs))           
+            existing = db.session.execute(
+                db.select(Record).filter_by(**record_kwargs)).scalar()
 
+            if existing:
+                duplicates.append(record_kwargs)
+                duplicate_count +=1
+                continue  # Skip exact duplicate
+            else:
+                records_to_insert.append(Record(**record_kwargs))
 
-        # Bulk-insert and commit
-        db.session.add_all(records_to_insert)
-        db.session.commit()
-        
+        if records_to_insert:
+            db.session.add_all(records_to_insert)
+            db.session.commit()
+            flash(f"{len(records_to_insert)} new record(s) inserted successfully.", "success")
 
-
-    #     if records_to_insert:
-    #         record_dict = records_to_insert[0].record_to_dict()
-    #         header = record_dict.keys()
+        if duplicate_count > 0:
+            flash(f"{duplicate_count} duplicate record(s) were skipped.", "warning")
 
 
     return render_template('record_insert.html', header=header)
@@ -145,36 +154,53 @@ def record_update():
         updated_ids = request.form.getlist('record_ids')
         updated_fields = request.form.getlist('fieldname[]')
 
-        print("Updated IDs:", updated_ids)
-        print("Updated field values:", updated_fields)
+        duplicate_updates = 0
+        updated_count = 0
 
-        # Validate count
         if len(updated_fields) != len(updated_ids) * len(fields):
             return "Mismatch in form data", 400
 
-        # Process each record
         for i, record_id in enumerate(updated_ids):
             record = db.session.get(Record, int(record_id))
             if not record:
-                continue  # Skip if not found
+                continue
 
+            # Prepare proposed update
             offset = i * len(fields)
+            new_data = {}
             for j, field in enumerate(fields):
                 value = updated_fields[offset + j]
-                if value == 'None':
-                    value = None
+                value = None if value == 'None' else value
+                new_data[field] = value
+
+        # Check for duplicate with other records
+            existing = db.session.execute(
+                db.select(Record)
+                .filter_by(**new_data)
+                .filter(Record.record_id != record.record_id)
+            ).scalar()
+
+            if existing:
+                duplicate_updates += 1
+                continue  # Skip update due to duplication
+
+        # Apply changes
+            for field, value in new_data.items():
                 setattr(record, field, value)
+            updated_count += 1
 
-        db.session.commit()
+        if updated_count > 0:
+            db.session.commit()
+            flash(f"{updated_count} record(s) updated successfully.", "success")
+
+        if duplicate_updates > 0:
+            flash(f"{duplicate_updates} record(s) were skipped due to duplication.", "warning")
+
         return redirect(url_for('rec_con.record_update'))
-
-
-
-       
+      
     
     
     return render_template('record_update.html', header=header, records_json=records_json, filter_option = filter_option)
-
 
 
 

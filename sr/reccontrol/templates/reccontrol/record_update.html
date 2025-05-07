@@ -4,6 +4,18 @@
 
 {% block name %}RECORD UPDATE{% endblock %}
 
+{% block flash_messages %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show mt-3" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+{% endblock %}
 
 {% block checkbox_header %}
     <th></th>
@@ -74,12 +86,12 @@
                 selectButton.style.display = 'none';
                 submitButton.style.display = 'block';
     
-                // 👇 Now, convert remaining rows to editable inputs
+                // Now, convert remaining rows to editable inputs
                 const visibleRows = Array.from(document.querySelectorAll('tbody tr'));
                 visibleRows.forEach(row => {
                     const cells = row.querySelectorAll('td');
                     cells.forEach((cell, index) => {
-                        if (index === 0) return; // skip the checkbox + hidden input cell
+                        if (index === 0) return; // skip the checkbox
 
                         const input = cell.querySelector('input[type="hidden"]');
                         if (input) return; // safety check to skip hidden record_ids
@@ -92,7 +104,7 @@
             });
         }
     
-        console.log('Pre-selection finished');
+        
     });
     </script>
     

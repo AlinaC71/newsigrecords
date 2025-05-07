@@ -7,7 +7,9 @@ from .models import db
 
 def create_app(test_config=None):
     # create and configure the app
-    app = Flask(__name__, instance_relative_config=True)   
+    app = Flask(__name__, instance_relative_config=True) 
+
+    app.secret_key ='138b977ff08ed968ccf472dd3ae2dbbf'
 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:Andr66a1995@localhost/signall'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
