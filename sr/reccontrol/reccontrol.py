@@ -52,35 +52,41 @@ def record_insert():
 
     if request.method == 'POST':
         formdata = request.form
-        # print("FORMDATA:", request.form)
-        
 
-        
-        # Determine how many “rows” were submitted by looking at the first field
         num_rows = len(formdata.getlist(fields[0]))
         records_to_insert = []
         duplicate_count = 0
+        incomplete_count = 0
         duplicates = []
 
-        
-        # Build Record instances dynamically        
         for i in range(num_rows):
             record_kwargs = {}
-            for field in fields:                
-                value = formdata.getlist(field)[i] 
-                record_kwargs[field] = value                  
+            row_is_valid = True
+
+            for field in fields:
+                value = formdata.getlist(field)[i].strip()
+
                 if field in ['request_no', 'return_no']:
-                    record_kwargs[field] = value.strip() if value.strip() else None 
-                
+                    record_kwargs[field] = value if value else None
+                else:
+                    if not value:
+                        row_is_valid = False
+                    record_kwargs[field] = value
+
+            if not row_is_valid:
+                incomplete_count += 1
+                continue  # Skip row if any required field is missing
+
             existing = db.session.execute(
-                db.select(Record).filter_by(**record_kwargs)).scalar()
+                db.select(Record).filter_by(**record_kwargs)
+            ).scalar()
 
             if existing:
                 duplicates.append(record_kwargs)
-                duplicate_count +=1
-                continue  # Skip exact duplicate
-            else:
-                records_to_insert.append(Record(**record_kwargs))
+                duplicate_count += 1
+                continue  # Skip duplicate
+
+            records_to_insert.append(Record(**record_kwargs))
 
         if records_to_insert:
             db.session.add_all(records_to_insert)
@@ -90,8 +96,10 @@ def record_insert():
         if duplicate_count > 0:
             flash(f"{duplicate_count} duplicate record(s) were skipped.", "warning")
 
+        if incomplete_count > 0:
+            flash(f"{incomplete_count} incomplete row(s) were skipped (required fields missing).", "warning")
 
-    return render_template('record_insert.html', header=header)
+        return render_template('record_insert.html', header=fields)
 
     
 

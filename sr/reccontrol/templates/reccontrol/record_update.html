@@ -31,17 +31,18 @@
 
 
 {% block button_select %}
-    <button type="button" id="select-button">Select</button>
+  <div class="mt-3">
+    <button type="button" id="select-button" class="btn btn-warning">Select</button>
 {% endblock %}
 
 {% block button_submit %}
-    <button type="submit" id="submit-button" style="display: none;">Submit</button>
+    <button type="submit" id="submit-button" class="btn btn-success" style="display: none;">Submit</button>
+  </div>
 {% endblock %}
 
 
-
 {% block filter_dropdown scoped%}
-    <select name="dropdown" class="filter-dropdown" data-column="{{ h }}">
+    <select name="dropdown" class="form-select filter-dropdown" data-column="{{ h }}">
         <option value="">All</option>
         {% for o in filter_option[h] %}
             <option value="{{ o }}">{{ o }}</option>
