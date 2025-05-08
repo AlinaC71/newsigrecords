@@ -99,7 +99,7 @@ def record_insert():
         if incomplete_count > 0:
             flash(f"{incomplete_count} incomplete row(s) were skipped (required fields missing).", "warning")
 
-        return render_template('record_insert.html', header=fields)
+    return render_template('record_insert.html', header=fields)
 
     
 

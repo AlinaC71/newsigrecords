@@ -2,7 +2,6 @@ body {
     background-color: rgb(118, 218, 230);
     padding-top: 70px; /* Adjusted for fixed navbar */
     padding-bottom: 70px; /* Adjusted for fixed footer */
-    /* background-image:url('../img/tracks.jpg') ; */
     color:rgb(0, 0, 0);
   }
   
@@ -16,13 +15,7 @@ body {
   /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
   .row.content {height: 450px}
   
-  /* Set gray background color and 100% height */
-  /* .sidenav {
-    padding-top: 20px;
-    background-color: #f1f1f1;
-    height: 100%;
-  } */
-  
+    
   /* Set black background color, white text and some padding */
   footer {
     background-color: #555;
@@ -45,14 +38,31 @@ body {
 
   
   
-    .background-title {
-      background-image:url('../img/tracks.jpg') ; 
-      background-size: 1500px 500px; /* Cover the entire area of the title with the background image */
-      color: rgb(0, 0, 0); /* Text color for the title */
-      padding: 200px; /* Add padding to the title for better visibility */
-      text-align: center; /* Center-align the text */
-      font-size: 80px
-    }
+  .background-title {
+    position: relative; /* Ensure proper layering */
+    color: rgb(33, 33, 33); /* Text color */
+    text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.8); /* Soft white shadow */
+    padding: 200px;
+    text-align: center;
+    font-size: 80px;
+}
+
+/* Create a blurred background layer */
+.background-title::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/tracks.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: blur(4px);
+    z-index: -1; /* Ensures it's behind the text */
+}
+
+    
 
   h1 {
     text-align:center;
@@ -69,23 +79,25 @@ body {
 
   p {
     text-align:left;
-  }
-
-table {
-    border-collapse: collapse;
-    width: 100%;
 }
 
-th, td {
-    padding: 8px;
-    text-align: left;
-    border-bottom: 1px solid #000000;
+table#myTable {
+  border-collapse: collapse !important;
+  width: 100% !important;
 }
 
-th {
-    background-color: #007bff;
-    color: rgb(0, 0, 0);
+table#myTable td {
+  padding: 8px !important;
+  text-align: left !important;
+  border-bottom: 1px solid #000000 !important;
 }
+
+table#myTable thead th,
+table#myTable tbody tr td {
+  background-color: #8ab1dc !important; /* Light blue */
+  color: black !important;
+}
+
 
 .button-container {
     display: flex;

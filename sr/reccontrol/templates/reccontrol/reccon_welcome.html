@@ -14,23 +14,41 @@
 </head>
 <body>
     <div class="container-fluid">
-      
-        <a href="{{ url_for('rec_con.record_search') }}">
-            <button type="button">Record Search</button>
-        </a>
+        <nav class="navbar navbar-expand navbar-light bg-tertiary fixed-top " >  <!--     -sm    -->  
+            <div class="container-fluid" >
+              <div class="collapse navbar-collapse" id="myNavbar">
+                <a class="navbar-brand" href="#">SigRec</a>
+                <ul class="nav navbar-nav">
+                  <li class="nav-item">
+                    <a class = "nav-link" href="{{ url_for('rec_con.record_search') }}">Search Records</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('rec_con.record_update') }}">Update Records</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('rec_con.record_insert') }}">Insert Records</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('rec_con.record_delete') }}">Delete Records</a>
+                  </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                  <li class="nav-item">
+                    <a class="nav-link" href="#"><span class="glyphicon glyphicon-log-in"></span>User Instructions</a>
+                  </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                  <li class="nav-item">
+                    <a class="nav-link" href="#"><span class="glyphicon glyphicon-log-in"></span>Login</a>
+                  </li>
+                </ul>  
+              </div>
+            </div>
+        </nav>
+      </div>    
 
-        <a href="{{ url_for('rec_con.record_delete') }}">
-            <button type="button">Record Delete</button>
-        </a>
 
-        <a href="{{ url_for('rec_con.record_insert') }}">
-            <button type="button">Record Insert</button>
-        </a>
 
-        <a href="{{ url_for('rec_con.record_update') }}">
-            <button type="button">Record Update</button>
-        </a>
-   
 
     </div>    
     
@@ -43,8 +61,7 @@
       <h3>User instructions</h3>
       <p>This database is intended to simplify the management of signalling records. Please refer to User Instruction tab for guidance on records management using this database.</p>
       <hr>          
-    </div>
-      
+    </div>     
     
      
 </body>
