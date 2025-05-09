@@ -66,6 +66,7 @@ body {
 
   h1 {
     text-align:center;
+    height: 75px;
   }
   
   h3 {
@@ -113,6 +114,7 @@ table#myTable tbody tr td {
     border-radius: 5px;
     cursor: pointer;
 }
+
 
 
 

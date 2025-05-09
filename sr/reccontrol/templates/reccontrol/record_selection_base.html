@@ -9,7 +9,37 @@
     
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
 </head>
-<body> 
+<body>
+    
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand navbar-light bg-tertiary fixed-top " >  <!--     -sm    -->  
+            <div class="container-fluid" >
+              <div class="collapse navbar-collapse" id="myNavbar">
+                <a class="navbar-brand" href="{{ url_for('rec_con.reccon_welcome') }}">SigRec</a>
+                <ul class="nav navbar-nav">
+                  <li class="nav-item">
+                    <a class = "nav-link" href="{{ url_for('rec_con.record_search') }}">Search Records</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('rec_con.record_update') }}">Update Records</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('rec_con.record_insert') }}">Insert Records</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('rec_con.record_delete') }}">Delete Records</a>
+                  </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Login</a>
+                  </li>
+                </ul>  
+              </div>
+            </div>
+        </nav>
+      </div> 
+    </div>    
 
     <div class="container mt-4"></div>
        
