@@ -6,7 +6,7 @@ from .models import db
 
 
 def create_app(test_config=None):
-    # create and configure the app
+    # create and configure the app using the application factoru+y 
     app = Flask(__name__, instance_relative_config=True) 
 
     app.secret_key ='138b977ff08ed968ccf472dd3ae2dbbf'
@@ -39,8 +39,6 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-
-
      
     from sr.general.general import gen    
     app.register_blueprint(gen)
@@ -48,8 +46,7 @@ def create_app(test_config=None):
     from sr.reccontrol.reccontrol import rec_con    
     app.register_blueprint(rec_con)
 
-
-        
+      
 
     return app
 
