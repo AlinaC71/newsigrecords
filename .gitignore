@@ -1,6 +1,5 @@
 myenv-newsigrecords/
-
+*.pyc
 __pycache__/
-
-.vscode/
+*.db
 
