@@ -10,8 +10,12 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True) 
 
     app.secret_key ='138b977ff08ed968ccf472dd3ae2dbbf'
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    db_path = os.path.join(basedir, '..', 'database.db')  # goes up one level
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:Andr66a1995@localhost/signall'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{db_path}"
+    print("Using DB:", app.config['SQLALCHEMY_DATABASE_URI'])
+
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['TEMPLATES_AUTO_RELOAD'] = True
 
@@ -38,6 +42,15 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+    
+    @app.route('/db-check')
+    def db_check():
+        from sr.models import Record  # or whatever model you defined
+        try:
+            record = Record.query.first()
+            return f"DB Connected! Found record: {record}" if record else "DB Connected but no data"
+        except Exception as e:
+            return f"DB error: {e}"
 
      
     from sr.general.general import gen    
