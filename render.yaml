@@ -1,9 +1,10 @@
 services:
   - type: web
-    name: flask-app
+    name: newsigrecords
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn sr:app  
+                  mkdir -p instance
+    startCommand: gunicorn sr:create app()  
     envVars:
       - key: FLASK_ENV
         value: production

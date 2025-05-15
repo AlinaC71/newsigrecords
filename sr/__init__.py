@@ -9,19 +9,16 @@ def create_app(test_config=None):
     # create and configure the app using the application factoru+y 
     app = Flask(__name__, instance_relative_config=True) 
 
-    
-    basedir = os.path.abspath(os.path.dirname(__file__))
-    db_path = os.path.join(basedir, '..', 'database.db')  # goes up one level
+    # Ensure the instance folder exists
+    os.makedirs(app.instance_path, exist_ok=True)
 
-    
-    
+    # SQLite DB will be stored inside /instance/database.db
+    db_path = os.path.join(app.instance_path, 'database.db')
 
+    app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{db_path}"
+   
+    
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-fallback-key')
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///database.db')
-
-
-
-
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['TEMPLATES_AUTO_RELOAD'] = True
 

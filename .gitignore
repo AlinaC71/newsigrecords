@@ -2,4 +2,5 @@ myenv-newsigrecords/
 *.pyc
 __pycache__/
 *.db
+instance/
 
