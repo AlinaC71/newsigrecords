@@ -9,11 +9,11 @@ def create_app(test_config=None):
     # create and configure the app using the application factoru+y 
     app = Flask(__name__, instance_relative_config=True) 
 
-    # app.secret_key ='138b977ff08ed968ccf472dd3ae2dbbf'
+    
     basedir = os.path.abspath(os.path.dirname(__file__))
     db_path = os.path.join(basedir, '..', 'database.db')  # goes up one level
 
-    # app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{db_path}"
+    
     
 
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-fallback-key')
