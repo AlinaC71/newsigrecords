@@ -39,6 +39,28 @@ Originally developed with MySQL, the application was later converted to SQLite f
 Deployed on Render with secure environment variable management and persistent database support.
 
 
+
+
+## 🖼️ UI Screenshots
+
+### Home Page
+![Record Control UI](screenshots/home.png)
+
+### Record Control Page
+![Record Control UI](screenshots/reccon.png)
+
+### Record Insert Page
+![Record Control UI](screenshots/recinsert.png)
+
+### Record Search Page
+![Record Control UI](screenshots/recsearch.png)
+
+### Record Update Page
+![Record Control UI](screenshots/recupdate.png)
+
+### Record Delete Page
+![Record Control UI](screenshots/recdelete.png)
+
 ## 🚧 Planned Improvements
 - Full Module Implementation
 Extend the current architecture to fully implement the Design and Management modules, building on the existing Record Control foundation.
